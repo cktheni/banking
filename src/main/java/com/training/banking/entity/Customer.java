@@ -1,11 +1,14 @@
 package com.training.banking.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.training.banking.constant.AppConstants;
 import com.training.banking.entity.id.CustomerId;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -13,6 +16,7 @@ import java.util.List;
 @Entity
 @IdClass(CustomerId.class)
 @Table(name = "CUSTOMER")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Customer implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -37,11 +41,15 @@ public class Customer implements Serializable {
     @Column(name = "EMAIL_ID", length = 150)
     private String emailId;
 
+    @Column(name = "PAN_NUMBER", length = 150)
+    private String panNumber;
+
     @Column(name = "DATE_OF_BIRTH", length = 150)
-    private Date dateOfBirth;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = JsonFormat.DEFAULT_TIMEZONE)
+    private LocalDate dateOfBirth;
 
     @Column(name = "REGISTRATION_DATE")
-    private Date registrationDate;
+    private LocalDate registrationDate;
 
     @Column(name = "CUSTOMER_ADDRESS", length = 200)
     private String customerAddress;
@@ -61,6 +69,12 @@ public class Customer implements Serializable {
     @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
     private CustomerAccount customerAccount;
 
+    @Transient
+    private List<String> errors;
+
+    @Transient
+    private String response;
+
     @PrePersist
     void preInsert() {
         if (this.createdBy == null) {
@@ -70,7 +84,7 @@ public class Customer implements Serializable {
             setCreatedDate(new Date());
         }
         if (this.registrationDate == null) {
-            setRegistrationDate(new Date());
+            setRegistrationDate(LocalDate.now());
         }
     }
     @PreUpdate

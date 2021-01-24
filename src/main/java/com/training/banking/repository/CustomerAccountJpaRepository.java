@@ -7,5 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface CustomerAccountJpaRepository extends JpaRepository<CustomerAccount, CustomerAccountId> {
 
     CustomerAccount findByAccountNumberAndCurrencyCode(String accountNumner,String accountCurrency);
+    CustomerAccount findByAccountNumber(String accountNumner);
 
 }

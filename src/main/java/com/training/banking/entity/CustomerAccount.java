@@ -1,5 +1,6 @@
 package com.training.banking.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.training.banking.constant.AppConstants;
 import com.training.banking.entity.id.CustomerAccountId;
 import lombok.Data;
@@ -12,6 +13,7 @@ import java.util.Date;
 @Entity
 @IdClass(CustomerAccountId.class)
 @Table(name = "CUSTOMER_ACCOUNT")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CustomerAccount implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -1,10 +1,9 @@
 package com.training.banking.endpoint;
 
-import com.training.banking.constant.AppConstants;
-import com.training.banking.entity.Customer;
 import com.training.banking.entity.TransactionDetails;
 import com.training.banking.service.IntraBankTransfersService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,10 +24,10 @@ IntraBankTransfersService intraBankTransfersService;
     public ResponseEntity postTransaction(@RequestBody TransactionDetails transactionDetails) {
         try {
              transactionDetails = intraBankTransfersService.postTransaction(transactionDetails);
-            if (transactionDetails != null) {
+            if (transactionDetails != null && CollectionUtils.isEmpty(transactionDetails.getErrors())){
                 return ResponseEntity.ok(transactionDetails);
             } else {
-                return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(AppConstants.FAILURE_RESPONSE);
+                return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(transactionDetails);
             }
         } catch (Exception e) {
             log.error("Exception:" + e.getMessage(), e);

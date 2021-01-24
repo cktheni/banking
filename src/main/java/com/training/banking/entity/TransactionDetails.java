@@ -1,5 +1,6 @@
 package com.training.banking.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.training.banking.constant.AppConstants;
 import com.training.banking.entity.id.TransactionDetailsId;
 import lombok.Data;
@@ -7,12 +8,13 @@ import lombok.Data;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.UUID;
+import java.util.List;
 
 @Data
 @Entity
 @Table(name = "TRANSFERS_TRANSACTION_DETAILS")
 @IdClass(TransactionDetailsId.class)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class TransactionDetails  implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -59,6 +61,9 @@ public class TransactionDetails  implements Serializable {
     @Column(name = "TRANSACTION_TYPE", nullable = false, length = 50)
     private String transactionType;
 
+    @Column(name = "REMARKS", nullable = false, length = 100)
+    private String remarks;
+
     @Column(name = "CREATED_BY", nullable = false, length = 100, columnDefinition = "VARCHAR2(100 CHAR) DEFAULT '" + AppConstants.DEFAULT_CREATED_BY + "'")
     private String createdBy;
 
@@ -70,6 +75,13 @@ public class TransactionDetails  implements Serializable {
 
     @Column(name = "UPDATED_DATE")
     private Date updatedDate;
+
+
+    @Transient
+    private List<String> errors;
+
+    @Transient
+    private String response;
 
     @PrePersist
     void preInsert() {

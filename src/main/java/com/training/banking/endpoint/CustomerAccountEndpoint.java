@@ -1,10 +1,9 @@
 package com.training.banking.endpoint;
 
-import com.training.banking.constant.AppConstants;
 import com.training.banking.entity.Customer;
 import com.training.banking.service.CustomerAccountService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,10 +24,10 @@ public class CustomerAccountEndpoint {
     public ResponseEntity registerCustomerAccount(@RequestBody Customer customerIn) {
         try {
             Customer customer = customerAccountService.registerCustomerAccount(customerIn);
-            if (customer != null) {
+            if (customer != null && CollectionUtils.isEmpty(customerIn.getErrors()) ) {
                 return ResponseEntity.ok(customer);
             } else {
-                return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(AppConstants.FAILURE_RESPONSE);
+                return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(customer);
             }
         } catch (Exception e) {
             log.error("Exception:" + e.getMessage(), e);

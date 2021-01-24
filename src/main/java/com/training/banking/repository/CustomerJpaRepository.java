@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CustomerJpaRepository  extends JpaRepository<Customer, CustomerId> {
 
-    Customer findByCountryCodeAndRelationshipNumber(String countryCode, String relationshipNumber);
-    void deleteByCountryCodeAndRelationshipNumber(String countryCode, String relationshipNumber);
-
+    Customer findByPanNumber(String panNumber);
+    Customer findByMobileNumber(String mobileNumber);
 }
