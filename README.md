@@ -212,6 +212,8 @@ dgit clone https://github.com/cktheni/banking.git
      }
  }
 
+https://sc.sabacloud.com/Saba/Web_spf/SPCTNT8Site/app/dashboard
+https://confluence.global.standardchartered.com/pages/viewpage.action?pageId=1967408318 
 
  TRANSFERS
  =========
